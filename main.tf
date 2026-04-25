@@ -81,7 +81,7 @@ resource "aws_instance" "ec2" {
   vpc_security_group_ids = [aws_security_group.sg.id]
   subnet_id              = aws_subnet.subnet.id
 
-  user_data = <<-EOF
+   user_data = <<-EOF
               #!/bin/bash
 
               # Update system
@@ -92,33 +92,16 @@ resource "aws_instance" "ec2" {
               systemctl start docker
               systemctl enable docker
 
-              # Install Python & pip
-              apt-get install python3-pip -y
+              # Add ubuntu user to docker group (optional but good practice)
+              usermod -aG docker ubuntu
 
-              # Install FastAPI & Uvicorn
-              pip3 install fastapi uvicorn
+              # Pull your Docker image
+              docker pull supriyokarmakar123/devops_fast_api:v1
 
-              # Move to ec2 user home
-              cd /home/ubuntu
+              # Run container
+              docker run -d -p 8000:8000 supriyokarmakar123/devops_fast_api:v1
 
-              # Create FastAPI app
-              cat <<EOT > main.py
-from fastapi import FastAPI
-
-app = FastAPI()
-
-@app.get("/")
-def home():
-    return {"message": "FastAPI running via Terraform  - SUPRIYO 🚀"}
-
-@app.get("/health")
-def health():
-    return {"status": "OK"}
-
-@app.get("/hello/{name}")
-def greet(name: str):
-    return {"message": f"Hello {name}"}
-EOT
+              EOF
 
               # Run app in background
               nohup uvicorn main:app --host 0.0.0.0 --port 8000 > app.log 2>&1 &
