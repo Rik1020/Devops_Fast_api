@@ -151,6 +151,11 @@ dev → qa → prod
 
 
 ---
+Working SS:
+
+
+<img width="1920" height="1019" alt="{10DAD43B-8183-42B2-BC2F-79E8EB98114E}" src="https://github.com/user-attachments/assets/d7f53370-5649-4a94-9240-6bacbd7debeb" />
+
 
 ## Author
 
