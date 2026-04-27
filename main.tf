@@ -82,31 +82,23 @@ resource "aws_instance" "ec2" {
   subnet_id              = aws_subnet.subnet.id
 
    user_data = <<-EOF
-              #!/bin/bash
+#!/bin/bash
 
-              # Update system
-              apt-get update -y
+# Update system
+apt-get update -y
 
-              # Install Docker
-              apt-get install docker.io -y
-              systemctl start docker
-              systemctl enable docker
+# Install Docker
+apt-get install docker.io -y
+systemctl start docker
+systemctl enable docker
 
-              # Add ubuntu user to docker group (optional but good practice)
-              usermod -aG docker ubuntu
+# Pull image
+docker pull supriyokarmakar123/devops_fast_api:v1
 
-              # Pull your Docker image
-              docker pull supriyokarmakar123/devops_fast_api:v1
+# Run container
+docker run -d -p 8000:8000 supriyokarmakar123/devops_fast_api:v1
 
-              # Run container
-              docker run -d -p 8000:8000 supriyokarmakar123/devops_fast_api:v1
-
-              EOF
-
-              # Run app in background
-              nohup uvicorn main:app --host 0.0.0.0 --port 8000 > app.log 2>&1 &
-              EOF
-
+EOF
   tags = {
     Name = "devops-ec2"
   }

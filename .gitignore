@@ -1,6 +1,16 @@
 # Terraform
 .terraform/
 *.tfstate
-*.tfstate.*
-crash.log
+*.tfstate.backup
+.terraform.lock.hcl
+
+# Sensitive files
 *.pem
+
+# Python
+__pycache__/
+*.pyc
+
+# OS / editor
+.DS_Store
+.vscode/
